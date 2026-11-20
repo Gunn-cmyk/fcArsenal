@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arsenal FC - สโมสรฟุตบอลอาร์เซนอล</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================
+       1. UX/UI Design Tokens (CSS Variables)
+       แก้ไขสีและค่าหลักของเว็บได้ที่นี่
+    ========================================= */
+    :root {
+      --arsenal-red: #EF0107;
+      --arsenal-red-dark: #B80005;
+      --arsenal-navy: #063672;
+      --arsenal-gold: #9C824A;
+      --bg-light: #F8F9FA;
+      --bg-white: #FFFFFF;
+      --text-main: #1A1D24;
+      --text-muted: #5A6270;
+      --border-soft: #E5E7EB;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 25px rgba(6, 54, 114, 0.12);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --transition: all 0.25s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      line-height: 1.65;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* =========================================
+       2. Navigation Bar & Dropdown Submenu
+    ========================================= */
+    header {
+      background-color: var(--arsenal-red);
+      color: var(--bg-white);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-white);
+      color: var(--arsenal-red);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      border: 2px solid var(--arsenal-gold);
+    }
+
+    nav ul.main-menu {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav ul.main-menu > li {
+      position: relative;
+    }
+
+    nav ul.main-menu > li > a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    nav ul.main-menu > li > a:hover,
+    nav ul.main-menu > li:focus-within > a {
+      background-color: var(--arsenal-red-dark);
+    }
+
+    /* เมนูย่อย (Dropdown) */
+    .dropdown-menu {
+      list-style: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 230px;
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      border-top: 3px solid var(--arsenal-gold);
+      padding: 8px 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: var(--transition);
+    }
+
+    nav ul.main-menu > li:hover .dropdown-menu,
+    nav ul.main-menu > li:focus-within .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: #FFF1F1;
+      color: var(--arsenal-red);
+      padding-left: 22px;
+    }
+
+    /* =========================================
+       3. Hero Section
+    ========================================= */
+    .hero {
+      background: linear-gradient(120deg, var(--arsenal-red-dark) 0%, var(--arsenal-red) 55%, var(--arsenal-navy) 100%);
+      color: var(--bg-white);
+      padding: 64px 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background-color: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 24px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--bg-white);
+      color: var(--arsenal-red);
+    }
+
+    .btn-primary:hover {
+      background-color: #F3F4F6;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
+      color: var(--bg-white);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .photo-box {
+      background-color: rgba(255, 255, 255, 0.12);
+      border: 2px dashed rgba(255, 255, 255, 0.45);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    .photo-note {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 8px;
+    }
+
+    /* =========================================
+       4. Sections & Cards
+    ========================================= */
+    section {
+      padding: 64px 0;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+      border-left: 5px solid var(--arsenal-red);
+      padding-left: 16px;
+    }
+
+    .section-header h2 {
+      font-size: 1.85rem;
+      color: var(--arsenal-navy);
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .read-more-link {
+      color: var(--arsenal-red);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .read-more-link:hover {
+      text-decoration: underline;
+    }
+
+    /* History Grid */
+    .history-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      background: var(--bg-white);
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .history-img {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #EEF1F5;
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+      color: var(--text-muted);
+      border: 1px dashed #CBD5E1;
+    }
+
+    .history-img img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    /* Squad Grid */
+    .squad-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
+    }
+
+    .player-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      border-bottom: 4px solid var(--arsenal-red);
+      transition: var(--transition);
+    }
+
+    .player-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .player-thumb {
+      height: 210px;
+      background: #F1F3F5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .player-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .jersey-no {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--arsenal-navy);
+      color: var(--bg-white);
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+
+    .player-body {
+      padding: 18px;
+    }
+
+    .player-pos {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--arsenal-gold);
+      text-transform: uppercase;
+    }
+
+    .player-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 4px 0 10px;
+      color: var(--text-main);
+    }
+
+    .card-link {
+      display: inline-block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--arsenal-red);
+    }
+
+    .card-link:hover {
+      color: var(--arsenal-navy);
+    }
+
+    /* Achievements Table */
+    .table-wrap {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    th {
+      background-color: var(--arsenal-navy);
+      color: var(--bg-white);
+      font-weight: 600;
+    }
+
+    tr:hover td {
+      background-color: #FAFBFD;
+    }
+
+    .badge-gold {
+      background-color: #FDF8E8;
+      color: var(--arsenal-gold);
+      border: 1px solid #E6D5A7;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* =========================================
+       5. Footer & Developer Contact
+    ========================================= */
+    footer {
+      background-color: var(--arsenal-navy);
+      color: var(--bg-white);
+      padding: 48px 0 24px;
+      border-top: 5px solid var(--arsenal-gold);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .dev-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .dev-card h3 {
+      color: #F3D999;
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .hero-grid,
+      .history-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-wrapper {
+        height: auto;
+        padding: 12px 0;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav ul.main-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ส่วนหัวและเมนูนำทางพร้อมเมนูย่อย -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#top" class="brand">
+        <span class="brand-badge">AFC</span>
+        <span>ARSENAL FC</span>
+      </a>
+
+      <nav aria-label="เมนูหลัก">
+        <ul class="main-menu">
+          <li><a href="#top">หน้าแรก</a></li>
+
+          <li>
+            <a href="#history">ประวัติสโมสร ▾</a>
+            <ul class="dropdown-menu">
+              <!-- เปลี่ยน href เป็นลิงก์หน้าย่อยของคุณ เช่น history-1886.html -->
+              <li><a href="#history">จุดเริ่มต้นปี 1886 (Dial Square)</a></li>
+              <li><a href="#history-detail">ยุคทองและทีมไร้พ่าย (Invincibles)</a></li>
+              <li><a href="history-more.html">อ่านประวัติฉบับเต็ม ↗</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#squad">รายชื่อผู้เล่น ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="#squad">ผู้รักษาประตูและกองหลัง</a></li>
+              <li><a href="#squad">กองกลางและกองหน้า</a></li>
+              <li><a href="squad-more.html">ดูรายชื่อทั้งหมดและสถิติ ↗</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#achievements">ผลงานความสำเร็จ ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="#achievements">แชมป์ลีกสูงสุดอังกฤษ</a></li>
+              <li><a href="#achievements">เอฟเอ คัพ และถ้วยรางวัล</a></li>
+              <li><a href="trophies-more.html">ทำเนียบแชมป์ทั้งหมด ↗</a></li>
+            </ul>
+          </li>
+
+          <li><a href="#developer">ติดต่อผู้พัฒนา</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ส่วน Hero -->
+  <section id="top" class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-tag">Victoria Concordia Crescit</span>
+        <h1>สโมสรฟุตบอลอาร์เซนอล (Arsenal FC)</h1>
+        <p>
+          ศูนย์รวมข้อมูลสโมสรฟุตบอลอาร์เซนอล ตั้งแต่จุดเริ่มต้นแห่งประวัติศาสตร์ รายชื่อผู้เล่นคนสำคัญ
+          ไปจนถึงทำเนียบความสำเร็จตั้งแต่อดีตจนถึงปัจจุบัน พร้อมเมนูย่อยและลิงก์อ่านต่อในแต่ละหมวด
+        </p>
+        <div class="btn-group">
+          <a href="#squad" class="btn btn-primary">ดูรายชื่อผู้เล่น</a>
+          <a href="#achievements" class="btn btn-outline">ผลงานและถ้วยรางวัล</a>
+        </div>
+      </div>
+
+      <!-- ช่องใส่รูปภาพหลัก: แทนที่ข้อความด้วย <img src="URL_รูปภาพ" alt="คำอธิบายรูป"> -->
+      <div class="photo-box">
+        <!-- ตัวอย่างการใส่รูป: <img src="images/emirates-stadium.jpg" alt="สนามเอมิเรตส์ สเตเดียม"> -->
+        <strong>[พื้นที่รูปภาพหลักของสโมสร / สนามเหย้า]</strong>
+        <span class="photo-note">แก้ไขในโค้ด HTML: ใส่แท็ก &lt;img src="ที่อยู่รูปภาพ.jpg" alt="..."&gt;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ประวัติการก่อตั้งทีม -->
+  <section id="history">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>ประวัติการก่อตั้งสโมสร</h2>
+          <p>จากคนงานโรงงานผลิตอาวุธสู่หนึ่งในสโมสรชั้นนำของอังกฤษ</p>
+        </div>
+        <a href="history-more.html" class="read-more-link">คลิกอ่านประวัติเพิ่มเติม →</a>
+      </div>
+
+      <div class="history-grid">
+        <div class="history-img">
+          <!-- ตัวอย่างการใส่รูป: <img src="images/dial-square-1886.jpg" alt="ประวัติอาร์เซนอล"> -->
+          <div>
+            <strong>[พื้นที่รูปภาพประวัติศาสตร์สโมสร]</strong><br>
+            <span style="font-size: 0.85rem;">แนะนำขนาดแนวนอน 800x500 px</span>
+          </div>
+        </div>
+
+        <div id="history-detail">
+          <h3 style="color: var(--arsenal-navy); margin-bottom: 10px;">ก่อตั้งขึ้นในปี ค.ศ. 1886</h3>
+          <p style="margin-bottom: 12px;">
+            สโมสรฟุตบอลอาร์เซนอลก่อตั้งขึ้นเมื่อปลายปี ค.ศ. 1886 โดยกลุ่มคนงานจากโรงงานผลิตอาวุธ
+            <strong>Royal Arsenal</strong> ย่านวูลิช ทางตะวันออกเฉียงใต้ของกรุงลอนดอน ภายใต้ชื่อแรกเริ่มว่า
+            <strong>Dial Square</strong> ก่อนจะเปลี่ยนเป็น Royal Arsenal และ Woolwich Arsenal ตามลำดับ
+          </p>
+          <p style="margin-bottom: 16px;">
+            ต่อมาในปี ค.ศ. 1913 สโมสรได้ย้ายสนามเหย้ามายัง <strong>ไฮบิวรี (Highbury)</strong> ทางตอนเหนือของลอนดอน
+            และย้ายสู่ <strong>เอมิเรตส์ สเตเดียม (Emirates Stadium)</strong> ในปี ค.ศ. 2006 จนถึงปัจจุบัน
+          </p>
+          <a href="history-more.html" class="card-link">อ่านรายละเอียดแต่ละยุคสมัยเพิ่มเติม →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- รายชื่อผู้เล่น (สามารถเพิ่มหรือแก้ไขการ์ดได้ง่าย) -->
+  <section id="squad">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>รายชื่อผู้เล่นคนสำคัญ</h2>
+          <p>ตัวอย่างโครงสร้างการ์ดผู้เล่น — สามารถคัดลอกการ์ดเพื่อเพิ่มผู้เล่นหรือแก้ไขชื่อ/หมายเลขได้ทันที</p>
+        </div>
+        <a href="squad-more.html" class="read-more-link">ดูรายชื่อผู้เล่นทั้งหมด →</a>
+      </div>
+
+      <div class="squad-grid">
+        <!-- การ์ดผู้เล่นคนที่ 1 -->
+        <article class="player-card">
+          <div class="player-thumb">
+            <span class="jersey-no">#7</span>
+            <!-- <img src="images/saka.jpg" alt="บูกาโย ซากา"> -->
+            <span>[รูปภาพผู้เล่น #7]<br>ใส่แท็ก &lt;img src="..."&gt;</span>
+          </div>
+          <div class="player-body">
+            <div class="player-pos">กองหน้า / ปีกขวา (Forward)</div>
+            <h3 class="player-name">บูกาโย ซากา (Bukayo Saka)</h3>
+            <a href="player-saka.html" class="card-link">อ่านประวัติและสถิติเพิ่มเติม →</a>
+          </div>
+        </article>
+
+        <!-- การ์ดผู้เล่นคนที่ 2 -->
+        <article class="player-card">
+          <div class="player-thumb">
+            <span class="jersey-no">#8</span>
+            <!-- <img src="images/odegaard.jpg" alt="มาร์ติน โอเดการ์ด"> -->
+            <span>[รูปภาพผู้เล่น #8]<br>ใส่แท็ก &lt;img src="..."&gt;</span>
+          </div>
+          <div class="player-body">
+            <div class="player-pos">กองกลางตัวรุก (Midfielder)</div>
+            <h3 class="player-name">มาร์ติน โอเดการ์ด (Martin Ødegaard)</h3>
+            <a href="player-odegaard.html" class="card-link">อ่านประวัติและสถิติเพิ่มเติม →</a>
+          </div>
+        </article>
+
+        <!-- การ์ดผู้เล่นคนที่ 3 -->
+        <article class="player-card">
+          <div class="player-thumb">
+            <span class="jersey-no">#2</span>
+            <!-- <img src="images/saliba.jpg" alt="วิลเลียม ซาลิบา"> -->
+            <span>[รูปภาพผู้เล่น #2]<br>ใส่แท็ก &lt;img src="..."&gt;</span>
+          </div>
+          <div class="player-body">
+            <div class="player-pos">กองหลังตัวกลาง (Defender)</div>
+            <h3 class="player-name">วิลเลียม ซาลิบา (William Saliba)</h3>
+            <a href="player-saliba.html" class="card-link">อ่านประวัติและสถิติเพิ่มเติม →</a>
+          </div>
+        </article>
+
+        <!-- การ์ดผู้เล่นคนที่ 4 -->
+        <article class="player-card">
+          <div class="player-thumb">
+            <span class="jersey-no">#22</span>
+            <!-- <img src="images/raya.jpg" alt="ดาบิด รายา"> -->
+            <span>[รูปภาพผู้เล่น #22]<br>ใส่แท็ก &lt;img src="..."&gt;</span>
+          </div>
+          <div class="player-body">
+            <div class="player-pos">ผู้รักษาประตู (Goalkeeper)</div>
+            <h3 class="player-name">ดาบิด รายา (David Raya)</h3>
+            <a href="player-raya.html" class="card-link">อ่านประวัติและสถิติเพิ่มเติม →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ผลงานตั้งแต่อดีตจนถึงปัจจุบัน -->
+  <section id="achievements">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>ผลงานและความสำเร็จตั้งแต่อดีตจนถึงปัจจุบัน</h2>
+          <p>สรุปรายการถ้วยรางวัลสำคัญและเหตุการณ์ประวัติศาสตร์ของสโมสร</p>
+        </div>
+        <a href="trophies-more.html" class="read-more-link">ดูรายละเอียดถ้วยรางวัลทั้งหมด →</a>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>รายการ / ยุคสมัย</th>
+              <th>จำนวน / สถิติสำคัญ</th>
+              <th>รายละเอียดเพิ่มเติม</th>
+              <th>ลิงก์อ่านต่อ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>แชมป์ลีกสูงสุดอังกฤษ (First Division / Premier League)</strong></td>
+              <td><span class="badge-gold">13 สมัย</span></td>
+              <td>รวมถึงฤดูกาลประวัติศาสตร์ 2003–04 คว้าแชมป์แบบไร้พ่ายตลอดทั้งฤดูกาล (The Invincibles)</td>
+              <td><a href="trophies-league.html" class="card-link">อ่านต่อ →</a></td>
+            </tr>
+            <tr>
+              <td><strong>เอฟเอ คัพ (FA Cup)</strong></td>
+              <td><span class="badge-gold">14 สมัย</span></td>
+              <td>หนึ่งในสโมสรที่คว้าแชมป์รายการนี้ได้มากที่สุดในประวัติศาสตร์ฟุตบอลอังกฤษ</td>
+              <td><a href="trophies-facup.html" class="card-link">อ่านต่อ →</a></td>
+            </tr>
+            <tr>
+              <td><strong>เอฟเอ คอมมูนิตี ชีลด์ (FA Community Shield)</strong></td>
+              <td><span class="badge-gold">17 สมัย</span></td>
+              <td>คว้าแชมป์รายการเปิดฤดูกาลอย่างต่อเนื่องในหลายทศวรรษ</td>
+              <td><a href="trophies-shield.html" class="card-link">อ่านต่อ →</a></td>
+            </tr>
+            <tr>
+              <td><strong>ยุคปัจจุบันและฟุตบอลยุโรป</strong></td>
+              <td><span class="badge-gold">ต่อเนื่อง</span></td>
+              <td>แข่งขันในระดับพรีเมียร์ลีกและยูฟ่า แชมเปียนส์ ลีก พร้อมพัฒนาทีมอย่างต่อเนื่อง</td>
+              <td><a href="trophies-modern.html" class="card-link">อ่านต่อ →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ส่วนท้ายและข้อมูลผู้พัฒนาเว็บ -->
+  <footer id="developer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 10px;">ARSENAL FC FAN & INFO PORTAL</h2>
+          <p style="color: rgba(255, 255, 255, 0.85); max-width: 520px;">
+            เว็บไซต์นี้ถูกออกแบบโครงสร้างให้ยืดหยุ่น สามารถเพิ่มรายชื่อผู้เล่น อัปเดตผลงานปัจจุบัน
+            เปลี่ยนรูปภาพ และเชื่อมโยงหน้าย่อยสำหรับอ่านรายละเอียดเพิ่มเติมได้สะดวก
+          </p>
+        </div>
+
+        <div class="dev-card">
+          <h3>ติดต่อผู้พัฒนาเว็บไซต์</h3>
+          <p><strong>ผู้พัฒนา:</strong> คุณกัญจน์ ศิรินารถ</p>
+          <p><strong>Line ID:</strong> 0955949438</p>
+          <p style="margin-top: 10px; font-size: 0.9rem;">
+            <a href="https://line.me/ti/p/~0955949438" target="_blank" rel="noopener noreferrer" style="color: #F3D999; text-decoration: underline;">
+              คลิกเพื่อเปิดลิงก์ Line ID: 0955949438 →
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="copyright">
+        © 2026 Arsenal FC Web Project | พัฒนาโดย คุณกัญจน์ ศิรินารถ (Line ID: 0955949438)
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
